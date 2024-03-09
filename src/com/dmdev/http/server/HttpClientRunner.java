@@ -6,12 +6,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static java.net.http.HttpRequest.BodyPublishers.ofFile;
 import static java.net.http.HttpRequest.newBuilder;
 
 public class HttpClientRunner {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
@@ -22,11 +24,12 @@ public class HttpClientRunner {
                 .POST(ofFile(Path.of("resources", "first.json")))
                 .build();
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("+++++++++++++++++");
-        System.out.println(response.headers());
-        System.out.println("+++++++++++++++++");
-        System.out.println(response.body());
-        System.out.println("+++++++++++++++++");
+        CompletableFuture<HttpResponse<String>> response1 = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        CompletableFuture<HttpResponse<String>> response2 = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        CompletableFuture<HttpResponse<String>> response3 = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        // Убеждаемся, что задержка на первых двух никак не влияет, потому что каждый запрос обрабатывается
+        // в своем личном потоке
+        System.out.println(response3.get().body());
     }
 }
