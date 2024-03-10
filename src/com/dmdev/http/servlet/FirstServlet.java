@@ -6,17 +6,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /*
- * Мы уже разбирали на предыдущих занятиях, что такое параметры запроса.
- * Теперь узнаем как их передавать не одним (через URL), а двумя разными способами.
- * Конечно же увидим, как их извлекать на стороне нашего сервлета,
- * а также познакомимся с очень мощным и удобным HTTP клиентом - Postman.
+ * Мы уже начинали работать с телом запроса HTTP Body, когда возвращали HTML страницу
+ * из нашего первого сервлета в HttpServletResponse. Теперь давайте более подробно
+ * остановимся на этой теме и детальнее разберем в видео как не только возвращать,
+ * но и отправлять самим в HTTP запросах.
  */
 
 @WebServlet("/first")
@@ -49,8 +51,22 @@ public class FirstServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, String[]> parameterMap = req.getParameterMap();
-        System.out.println(parameterMap);
+        try (BufferedReader reader = req.getReader();
+             Stream<String> lines = reader.lines()
+        ) {
+            System.out.println("--- Headers ---");
+            Enumeration<String> headerNames = req.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = req.getHeader(headerName);
+
+                // Выводим имя и значение заголовка
+                System.out.println(headerName + ": " + headerValue);
+            }
+
+            System.out.println("\n--- Body ---");
+            lines.forEach(System.out::println);
+        }
     }
 
     @Override
