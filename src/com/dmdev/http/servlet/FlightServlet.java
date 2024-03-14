@@ -21,17 +21,18 @@ public class FlightServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        try (PrintWriter writer = resp.getWriter()) {
-            writer.write("<h1>Список перелетов: </h1>");
-            writer.write("<ul>");
-            flightService.findAll().forEach(flightDto -> {
-                writer.write("""
-                        <li>
-                            <a href="/tickets?flightId=%d">%s</a>
-                        </li>
-                        """.formatted(flightDto.getId(), flightDto.getDescription()));
-            });
-            writer.write("</ul>");
-        }
+        // Убрали тут try-with-res чтобы не закрывался writer,
+        // чтобы продемонстрировать работу редиректа для url /dispatcher
+        PrintWriter writer = resp.getWriter();
+        writer.write("<h1>Список перелетов: </h1>");
+        writer.write("<ul>");
+        flightService.findAll().forEach(flightDto -> {
+            writer.write("""
+                    <li>
+                        <a href="/tickets?flightId=%d">%s</a>
+                    </li>
+                    """.formatted(flightDto.getId(), flightDto.getDescription()));
+        });
+        writer.write("</ul>");
     }
 }
