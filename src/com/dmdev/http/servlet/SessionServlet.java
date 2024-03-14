@@ -1,5 +1,6 @@
 package com.dmdev.http.servlet;
 
+import com.dmdev.http.dto.UserDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,10 +13,19 @@ import java.io.IOException;
 @WebServlet("/session")
 public class SessionServlet extends HttpServlet {
 
+    private static final String USER = "user";
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        System.out.println(session.isNew());
+        UserDto userDto = (UserDto) session.getAttribute(USER);
+        if (userDto == null) {
+            userDto = UserDto.builder()
+                    .id(25L)
+                    .mail("test@gmailcom")
+                    .build();
+            session.setAttribute(USER, userDto);
+        }
     }
 }
