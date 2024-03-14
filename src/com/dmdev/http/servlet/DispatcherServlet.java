@@ -16,11 +16,13 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/flights");
-//        req.setAttribute("1", "234");
-        requestDispatcher.include(req, resp);
-        PrintWriter writer = resp.getWriter();
-        writer.write("Hello 2");
+//        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/flights");
+////        req.setAttribute("1", "234");
+//        requestDispatcher.include(req, resp);
+//        PrintWriter writer = resp.getWriter();
+//        writer.write("Hello 2");
+
+        resp.sendRedirect("/flights");
 
         System.out.println();
     }
