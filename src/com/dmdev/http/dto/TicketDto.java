@@ -1,12 +1,12 @@
 package com.dmdev.http.dto;
 
-import java.math.BigDecimal;
+import lombok.Builder;
+import lombok.Value;
 
-public record TicketDto(
-        Long id,
-        Long flight_id,
-        String passenger_name,
-        String seat_no,
-        BigDecimal cost
-) {
+@Value
+@Builder
+public class TicketDto {
+    Long id;
+    Long flightId;
+    String seatNo;
 }
