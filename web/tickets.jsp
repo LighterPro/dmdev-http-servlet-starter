@@ -2,7 +2,7 @@
 <%@ page import="com.dmdev.http.dto.TicketDto" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file=""%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -10,7 +10,7 @@
 <body>
 <h1>Купленные билеты: </h1>
 <ul>
-<%--    ТАК УЖЕ НЕ ДЕЛАЮТ!! ЭТО ПРОСТО ДЛЯ ПРИМЕРА КАК БЫЛО!    --%>
+    <%--    ТАК УЖЕ НЕ ДЕЛАЮТ!! ЭТО ПРОСТО ДЛЯ ПРИМЕРА КАК БЫЛО!    --%>
     <%
         Long flightId = Long.valueOf(request.getParameter("flightId"));
         List<TicketDto> tickets = TicketService.getInstance().findAllByFlightId(flightId);
