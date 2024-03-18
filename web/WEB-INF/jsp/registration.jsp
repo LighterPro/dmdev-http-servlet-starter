@@ -38,6 +38,16 @@
                 </c:forEach><br>
             </label>
             <button type="submit">Send</button>
+            <div>
+                <c:if test="${not empty requestScope.errors}">
+                    <div style="color: darkred">
+                        <br><span>Errors:</span><br>
+                        <c:forEach var="error" items="${requestScope.errors}">
+                            <span>  - ${error.message}</span><br>
+                        </c:forEach>
+                    </div>
+                </c:if>
+            </div>
         </form>
     </body>
 </html>
