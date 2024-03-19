@@ -5,6 +5,7 @@
     <head>
         <title>Flights</title>
     </head>
+    <%@ include file="header.jsp" %>
     <body>
         <h1>Список перелетов: </h1>
         <ul>

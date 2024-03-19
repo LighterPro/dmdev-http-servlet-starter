@@ -2,12 +2,16 @@ package com.dmdev.http.service;
 
 import com.dmdev.http.dao.UserDao;
 import com.dmdev.http.dto.CreateUserDto;
+import com.dmdev.http.dto.UserDto;
 import com.dmdev.http.entity.User;
 import com.dmdev.http.exception.ValidationException;
 import com.dmdev.http.mapper.CreateUserMapper;
+import com.dmdev.http.mapper.UserMapper;
 import com.dmdev.http.validator.CreateUserDtoValidator;
 import com.dmdev.http.validator.ValidationResult;
 import lombok.SneakyThrows;
+
+import java.util.Optional;
 
 public class UserService {
 
@@ -24,6 +28,7 @@ public class UserService {
     private final CreateUserDtoValidator createUserDtoValidator = CreateUserDtoValidator.getInstance();
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final ImageService imageService = ImageService.getInstance();
+    private final UserMapper userMapper = UserMapper.getInstance();
 
     @SneakyThrows
     public Integer create(CreateUserDto createUserDto) {
@@ -44,5 +49,9 @@ public class UserService {
         return userEntity.getId();
     }
 
+    public Optional<UserDto> login(String email, String password) {
+        return userDao.findByEmailAndPassword(email, password)
+                .map(userMapper::map);
+    }
 
 }

@@ -1,12 +1,12 @@
 package com.dmdev.http.dao;
 
+import com.dmdev.http.entity.Gender;
+import com.dmdev.http.entity.Role;
 import com.dmdev.http.entity.User;
 import com.dmdev.http.util.ConnectionManager;
+import lombok.SneakyThrows;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +17,13 @@ public class UserDao implements Dao<Integer, User> {
     public static final String SAVE_SQL = """
             INSERT INTO flight_repository.public.users (name, birthday, email, password, role, gender, image)
             VALUES (?, ?, ?, ?, ?, ?, ?)
+            """;
+
+    public static final String GET_BY_EMAIL_AND_PASSWORD_SQL = """
+            SELECT *
+            FROM users
+            WHERE email = ?
+                AND password = ?
             """;
 
     private static final UserDao INSTANCE = new UserDao();
@@ -67,5 +74,38 @@ public class UserDao implements Dao<Integer, User> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @SneakyThrows
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        try (Connection connection = ConnectionManager.get();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_AND_PASSWORD_SQL)
+        ) {
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = buildEntity(resultSet);
+            }
+
+            return Optional.ofNullable(user);
+        }
+    }
+
+    private static User buildEntity(ResultSet resultSet) throws SQLException {
+        User user;
+        user = User.builder()
+                .id(resultSet.getObject("id", Integer.class))
+                .name(resultSet.getObject("name", String.class))
+                .birthday(resultSet.getObject("birthday", Date.class).toLocalDate())
+                .image(resultSet.getObject("image", String.class))
+                .email(resultSet.getObject("email", String.class))
+                .password(resultSet.getObject("password", String.class))
+                .role(Role.valueOf(resultSet.getObject("role", String.class)))
+                .gender(Gender.valueOf(resultSet.getObject("gender", String.class)))
+                .build();
+        return user;
     }
 }
