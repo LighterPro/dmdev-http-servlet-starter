@@ -6,13 +6,13 @@ import com.dmdev.http.entity.Role;
 import com.dmdev.http.exception.ValidationException;
 import com.dmdev.http.service.UserService;
 import com.dmdev.http.util.JspHelper;
+import com.dmdev.http.util.UrlPaths;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class RegistrationServlet extends HttpServlet {
 
         try {
             userService.create(createUserDto);
-            resp.sendRedirect("/login");
+            resp.sendRedirect(UrlPaths.LOGIN_URL);
         } catch (ValidationException e) {
             req.setAttribute("errors", e.getErrors());
             doGet(req, resp);

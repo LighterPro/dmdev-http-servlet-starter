@@ -1,5 +1,6 @@
 package com.dmdev.http.servlet;
 
+import com.dmdev.http.util.UrlPaths;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +14,6 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        resp.sendRedirect("/login");
+        resp.sendRedirect(UrlPaths.LOGIN_URL);
     }
 }
