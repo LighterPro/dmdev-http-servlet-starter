@@ -7,13 +7,16 @@ import com.dmdev.http.exception.ValidationException;
 import com.dmdev.http.service.UserService;
 import com.dmdev.http.util.JspHelper;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 
+@MultipartConfig(fileSizeThreshold = 1024 * 1024)
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
@@ -37,6 +40,7 @@ public class RegistrationServlet extends HttpServlet {
                 .password(req.getParameter("password"))
                 .role(req.getParameter("role"))
                 .gender(req.getParameter("gender"))
+                .image(req.getPart("image"))
                 .build();
 
         try {
@@ -44,7 +48,7 @@ public class RegistrationServlet extends HttpServlet {
             resp.sendRedirect("/login");
         } catch (ValidationException e) {
             req.setAttribute("errors", e.getErrors());
-            doGet(req,resp);
+            doGet(req, resp);
         }
     }
 }

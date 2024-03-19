@@ -8,6 +8,7 @@ import com.dmdev.http.util.LocalDateFormatter;
 
 public class CreateUserMapper implements Mapper<CreateUserDto, User> {
 
+    private static final String IMAGE_FOLDER = "users/";
     private static final CreateUserMapper INSTANCE = new CreateUserMapper();
 
     public static CreateUserMapper getInstance() {
@@ -26,6 +27,7 @@ public class CreateUserMapper implements Mapper<CreateUserDto, User> {
                 .password(createUserDto.getPassword())
                 .gender(Gender.valueOf(createUserDto.getGender()))
                 .role(Role.valueOf(createUserDto.getRole()))
+                .image(IMAGE_FOLDER + createUserDto.getImage().getSubmittedFileName())
                 .build();
 
 

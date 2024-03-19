@@ -15,8 +15,8 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 public class UserDao implements Dao<Integer, User> {
 
     public static final String SAVE_SQL = """
-            INSERT INTO flight_repository.public.users (name, birthday, email, password, role, gender)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO flight_repository.public.users (name, birthday, email, password, role, gender, image)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """;
 
     private static final UserDao INSTANCE = new UserDao();
@@ -56,6 +56,7 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setObject(4, entity.getPassword());
             preparedStatement.setObject(5, entity.getRole().name());
             preparedStatement.setObject(6, entity.getGender().name());
+            preparedStatement.setObject(7, entity.getImage());
 
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();

@@ -12,12 +12,14 @@
         <title>Registration</title>
     </head>
     <body>
-        <form action="${pageContext.request.contextPath}/registration" method="post">
+        <img src="${pageContext.request.contextPath}/images/users/1.png" alt="User image">
+<%--        <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" width="300" height="300" alt="User image from internet">--%>
+        <form action="${pageContext.request.contextPath}/registration" method="post" enctype="multipart/form-data">
             <label for="name">Name:
                 <input type="text" name="name" id="name">
             </label><br>
             <label for="birthday">Birthday:
-                <input type="date" name="birthday" id="birthday">
+                <input type="date" name="birthday" id="birthday" required>
             </label><br>
             <label for="email">Email:
                 <input type="text" name="email" id="email">
@@ -37,6 +39,9 @@
                     <input type="radio" name="gender" value=${gender}>${gender}
                 </c:forEach><br>
             </label>
+            <label for="imageId">Image:
+                <input type="file" name="image" id="imageId">
+            </label><br>
             <button type="submit">Send</button>
             <div>
                 <c:if test="${not empty requestScope.errors}">

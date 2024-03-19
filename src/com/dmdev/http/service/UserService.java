@@ -7,6 +7,7 @@ import com.dmdev.http.exception.ValidationException;
 import com.dmdev.http.mapper.CreateUserMapper;
 import com.dmdev.http.validator.CreateUserDtoValidator;
 import com.dmdev.http.validator.ValidationResult;
+import lombok.SneakyThrows;
 
 public class UserService {
 
@@ -22,7 +23,9 @@ public class UserService {
     private final UserDao userDao = UserDao.getInstance();
     private final CreateUserDtoValidator createUserDtoValidator = CreateUserDtoValidator.getInstance();
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
+    private final ImageService imageService = ImageService.getInstance();
 
+    @SneakyThrows
     public Integer create(CreateUserDto createUserDto) {
         // validation
         ValidationResult validationResult = createUserDtoValidator.isValid(createUserDto);
@@ -33,13 +36,12 @@ public class UserService {
         // mapper
         User userEntity = createUserMapper.map(createUserDto);
 
-        // userDao.save
+        // Сохранение картинки + userDao.save (по идее это надо делать в транзакции, но тут для простоты не испозуется)
+        imageService.upload(userEntity.getImage(), createUserDto.getImage().getInputStream());
         userDao.save(userEntity);
 
         // return userDao.id
-        Integer userEntityId = userEntity.getId();
-
-        return userEntityId;
+        return userEntity.getId();
     }
 
 
