@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: dos
-  Date: 16.03.2024
-  Time: 01:01
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -12,8 +5,7 @@
         <title>Registration</title>
     </head>
     <body>
-        <img src="${pageContext.request.contextPath}/images/users/1.png" alt="User image">
-<%--        <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" width="300" height="300" alt="User image from internet">--%>
+        <img src="${pageContext.request.contextPath}/images/users/42.jpeg" width="20%" height="20%" alt="User image">
         <form action="${pageContext.request.contextPath}/registration" method="post" enctype="multipart/form-data">
             <label for="name">Name:
                 <input type="text" name="name" id="name">
